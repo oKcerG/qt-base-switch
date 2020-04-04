@@ -49,6 +49,12 @@
 #include <private/qjni_p.h>
 #endif
 
+#if defined(Q_OS_SWITCH)
+extern "C" {
+#  include <switch/runtime/hosversion.h>
+}
+#endif
+
 QT_BEGIN_NAMESPACE
 
 /*!
@@ -212,6 +218,11 @@ QOperatingSystemVersion QOperatingSystemVersion::current()
 
     // API level 6 was exactly version 2.0.1
     version.m_micro = versionIdx == 5 ? 1 : -1;
+#elif defined(Q_OS_SWITCH)
+    uint32_t hosVersion = ::hosversionGet();
+    version.m_major = HOSVER_MAJOR(hosVersion);
+    version.m_minor = HOSVER_MINOR(hosVersion);
+    version.m_micro = HOSVER_MICRO(hosVersion);
 #else
     version.m_major = -1;
     version.m_minor = -1;
@@ -336,6 +347,8 @@ QString QOperatingSystemVersion::name() const
         return QStringLiteral("watchOS");
     case QOperatingSystemVersion::Android:
         return QStringLiteral("Android");
+    case QOperatingSystemVersion::Switch:
+        return QStringLiteral("Switch");
     case QOperatingSystemVersion::Unknown:
     default:
         return QString();

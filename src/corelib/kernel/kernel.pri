@@ -190,6 +190,13 @@ vxworks {
                 kernel/qfunctions_vxworks.h
 }
 
+switch {
+        SOURCES += \
+                kernel/qfunctions_switch.cpp
+        HEADERS += \
+                kernel/qfunctions_switch.h
+}
+
 qnx:qtConfig(qqnx_pps) {
         QMAKE_USE_PRIVATE += pps
         SOURCES += \

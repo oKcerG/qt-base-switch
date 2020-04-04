@@ -59,6 +59,9 @@
 #  include <unistd.h>
 #  include <netdb.h>
 #  include <netinet/in.h>
+#  ifdef Q_OS_SWITCH
+#  include <arpa/inet.h>
+#  endif
 #  if defined(AI_ADDRCONFIG)
 #    define Q_ADDRCONFIG          AI_ADDRCONFIG
 #  endif

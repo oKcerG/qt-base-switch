@@ -57,7 +57,8 @@ public:
         IOS,
         TvOS,
         WatchOS,
-        Android
+        Android,
+        Switch
     };
 
     static const QOperatingSystemVersion Windows7;
@@ -108,6 +109,8 @@ public:
         return WatchOS;
 #elif defined(Q_OS_ANDROID)
         return Android;
+#elif defined(Q_OS_SWITCH)
+        return Switch;
 #else
         return Unknown;
 #endif

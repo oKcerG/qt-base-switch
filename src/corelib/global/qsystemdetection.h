@@ -173,6 +173,8 @@
 #  define Q_OS_VXWORKS
 #elif defined(__HAIKU__)
 #  define Q_OS_HAIKU
+#elif defined(__DEVKITA64__)
+#  define Q_OS_SWITCH
 #elif defined(__MAKEDEPEND__)
 #else
 #  error "Qt has not been ported to this OS - see http://www.qt-project.org/"

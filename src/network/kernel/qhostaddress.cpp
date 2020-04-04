@@ -45,6 +45,8 @@
 #if defined(Q_OS_WIN)
 # include <winsock2.h>
 # include <ws2tcpip.h>
+#elif defined(Q_OS_SWITCH)
+# include <arpa/inet.h>
 #else
 # include <netinet/in.h>
 #endif

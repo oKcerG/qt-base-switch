@@ -58,6 +58,8 @@
 #include <arpa/inet.h>
 #if defined(Q_OS_VXWORKS)
 #  include <hostLib.h>
+#elif defined(Q_OS_SWITCH)
+#  include <arpa/inet.h>
 #else
 #  include <resolv.h>
 #endif
@@ -194,7 +196,9 @@ QHostInfo QHostInfoAgent::fromName(const QString &hostName)
 
 QString QHostInfo::localDomainName()
 {
-#if !defined(Q_OS_VXWORKS) && !defined(Q_OS_ANDROID)
+#if defined(Q_OS_SWITCH)
+    return QString();
+#elif !defined(Q_OS_VXWORKS) && !defined(Q_OS_ANDROID)
     resolveLibrary(NeedResNInit);
     if (local_res_ninit) {
         // using thread-safe version

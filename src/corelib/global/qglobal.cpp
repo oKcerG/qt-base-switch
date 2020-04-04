@@ -97,7 +97,7 @@
 #  include <private/qcore_mac_p.h>
 #endif
 
-#ifdef Q_OS_UNIX
+#if defined(Q_OS_UNIX) && !defined(Q_OS_SWITCH)
 #include <sys/utsname.h>
 #include <private/qcore_unix_p.h>
 #endif
@@ -2522,6 +2522,12 @@ Oreo
 }
 #endif
 
+#if defined(Q_OS_SWITCH)
+static const char *osVer_helper(QOperatingSystemVersion version = QOperatingSystemVersion::current()) {
+    return 0;
+}
+#endif
+
 /*!
     \since 5.4
 
@@ -2611,6 +2617,8 @@ QString QSysInfo::currentCpuArchitecture()
 #elif defined(Q_OS_DARWIN) && !defined(Q_OS_MACOS)
     // iOS-based OSes do not return the architecture on uname(2)'s result.
     return buildCpuArchitecture();
+#elif defined(Q_OS_SWITCH)
+    return QStringLiteral("arm64");
 #elif defined(Q_OS_UNIX)
     long ret = -1;
     struct utsname u;
@@ -2748,6 +2756,8 @@ QString QSysInfo::kernelType()
 {
 #if defined(Q_OS_WIN)
     return QStringLiteral("winnt");
+#elif defined(Q_OS_SWITCH)
+    return QStringLiteral("horizon");
 #elif defined(Q_OS_UNIX)
     struct utsname u;
     if (uname(&u) == 0)
@@ -2771,7 +2781,7 @@ QString QSysInfo::kernelType()
 */
 QString QSysInfo::kernelVersion()
 {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined (Q_OS_SWITCH)
     const auto osver = QOperatingSystemVersion::current();
     return QString::number(osver.majorVersion()) + QLatin1Char('.') + QString::number(osver.minorVersion())
             + QLatin1Char('.') + QString::number(osver.microVersion());
@@ -2850,6 +2860,8 @@ QString QSysInfo::productType()
 #  endif
 #elif defined(Q_OS_DARWIN)
     return QStringLiteral("darwin");
+#elif defined(Q_OS_SWITCH)
+    return QStringLiteral("switch");
 
 #elif defined(USE_ETC_OS_RELEASE) // Q_OS_UNIX
     QUnixOSVersion unixOsVersion;
@@ -2900,7 +2912,7 @@ QString QSysInfo::productType()
 */
 QString QSysInfo::productVersion()
 {
-#if defined(Q_OS_ANDROID) || defined(Q_OS_DARWIN)
+#if defined(Q_OS_ANDROID) || defined(Q_OS_DARWIN) || defined(Q_OS_SWITCH)
     const auto version = QOperatingSystemVersion::current();
     return QString::number(version.majorVersion()) + QLatin1Char('.') + QString::number(version.minorVersion());
 #elif defined(Q_OS_WIN)
@@ -2938,7 +2950,7 @@ QString QSysInfo::productVersion()
 */
 QString QSysInfo::prettyProductName()
 {
-#if (defined(Q_OS_ANDROID) && !defined(Q_OS_ANDROID_EMBEDDED)) || defined(Q_OS_DARWIN) || defined(Q_OS_WIN)
+#if (defined(Q_OS_ANDROID) && !defined(Q_OS_ANDROID_EMBEDDED)) || defined(Q_OS_DARWIN) || defined(Q_OS_WIN) || defined(Q_OS_SWITCH)
     const auto version = QOperatingSystemVersion::current();
     const int majorVersion = version.majorVersion();
     const QString versionString = QString::number(majorVersion) + QLatin1Char('.')
@@ -3000,7 +3012,7 @@ QString QSysInfo::prettyProductName()
 
     \sa QHostInfo::localDomainName, machineUniqueId()
  */
-QString QSysInfo::machineHostName()
+QString QSysInfo::machineHostName() // TODO SWITCH
 {
     // the hostname can change, so we can't cache it
 #if defined(Q_OS_LINUX)
@@ -3066,6 +3078,8 @@ QByteArray QSysInfo::machineUniqueId()
     if (sysctl(name, sizeof name / sizeof name[0], &uuid, &uuidlen, nullptr, 0) == 0
             && uuidlen == sizeof(uuid))
         return QByteArray(uuid, uuidlen - 1);
+#elif defined(Q_OS_SWITCH)
+    return QByteArray(); // TODO SWITCH
 #elif defined(Q_OS_UNIX)
     // The modern name on Linux is /etc/machine-id, but that path is
     // unlikely to exist on non-Linux (non-systemd) systems. The old

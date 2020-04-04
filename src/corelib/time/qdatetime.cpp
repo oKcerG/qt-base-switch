@@ -2707,6 +2707,8 @@ static int qt_timezone()
         return -t.tm_gmtoff + (t.tm_isdst ? (long)SECS_PER_HOUR : 0L);
 #elif defined(Q_OS_INTEGRITY) || defined(Q_OS_RTEMS)
         return 0;
+#elif defined(Q_OS_SWITCH)
+        return _timezone;
 #else
         return timezone;
 #endif // Q_OS_WIN

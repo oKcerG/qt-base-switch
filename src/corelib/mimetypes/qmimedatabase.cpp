@@ -91,7 +91,7 @@ bool QMimeDatabasePrivate::shouldCheck()
     return true;
 }
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_INTEGRITY)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_INTEGRITY) && !defined(Q_OS_SWITCH)
 #define QT_USE_MMAP
 #endif
 

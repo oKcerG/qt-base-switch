@@ -37,7 +37,8 @@ Changes for ARM 9/9/2010 [Downstream relative to Gladman's GitHub, upstream to Q
 #elif defined( __FreeBSD__ ) || defined( __OpenBSD__ ) || defined( __NetBSD__ )
 #  include <sys/endian.h>
 #elif defined( BSD ) && ( BSD >= 199103 ) || defined( __APPLE__ ) || \
-      defined( __CYGWIN32__ ) || defined( __DJGPP__ ) || defined( __osf__ )
+      defined( __CYGWIN32__ ) || defined( __DJGPP__ ) || defined( __osf__ ) || \
+      defined( __DEVKITA64__)
 #  include <machine/endian.h>
 #elif defined( __linux__ ) || defined( __GNUC__ ) || defined( __GNU_LIBRARY__ )
 #  if !defined( __MINGW32__ ) && !defined( _AIX ) && !defined(Q_OS_QNX)

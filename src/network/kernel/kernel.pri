@@ -39,7 +39,7 @@ qtConfig(dnslookup) {
 }
 
 unix {
-    !integrity:qtConfig(dnslookup): SOURCES += kernel/qdnslookup_unix.cpp
+    !integrity:!switch:qtConfig(dnslookup): SOURCES += kernel/qdnslookup_unix.cpp
 
     SOURCES += kernel/qhostinfo_unix.cpp
 

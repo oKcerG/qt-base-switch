@@ -58,7 +58,7 @@
 #include <sys/file.h>  // flock
 #endif
 
-#if defined(Q_OS_RTEMS) || defined(Q_OS_QNX)
+#if defined(Q_OS_RTEMS) || defined(Q_OS_QNX) || defined(Q_OS_SWITCH)
 // flock() does not work in these OSes and produce warnings when we try to use
 #  undef LOCK_EX
 #  undef LOCK_NB

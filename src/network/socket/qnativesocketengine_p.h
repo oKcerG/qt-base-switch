@@ -59,6 +59,9 @@
 #ifndef Q_OS_WIN
 #  include "qplatformdefs.h"
 #  include <netinet/in.h>
+#  ifdef Q_OS_SWITCH
+#    include <arpa/inet.h>
+#  endif
 #else
 #  include <winsock2.h>
 #  include <ws2tcpip.h>

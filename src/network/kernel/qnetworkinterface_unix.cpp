@@ -109,7 +109,11 @@ uint QNetworkInterfaceManager::interfaceIndexFromName(const QString &name)
 
     uint id = 0;
     if (qt_safe_ioctl(socket, SIOCGIFINDEX, &req) >= 0)
+#if defined(Q_OS_SWITCH)
+        id = req.ifr_index;
+#else
         id = req.ifr_ifindex;
+#endif
     qt_safe_close(socket);
     return id;
 #else
@@ -214,7 +218,7 @@ static QNetworkInterfacePrivate *findInterface(int socket, QList<QNetworkInterfa
     // Get the interface index
 #  ifdef SIOCGIFINDEX
     if (qt_safe_ioctl(socket, SIOCGIFINDEX, &req) >= 0)
-#    if defined(Q_OS_HAIKU)
+#    if defined(Q_OS_HAIKU) || defined(Q_OS_SWITCH)
         ifindex = req.ifr_index;
 #    else
         ifindex = req.ifr_ifindex;

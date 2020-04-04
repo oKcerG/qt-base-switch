@@ -67,6 +67,8 @@
 #include <arpa/inet.h>
 #if defined(Q_OS_VXWORKS)
 #  include <hostLib.h>
+#elif defined(Q_OS_SWITCH)
+#  include <arpa/inet.h>
 #else
 #  include <resolv.h>
 #endif

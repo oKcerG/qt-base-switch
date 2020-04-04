@@ -191,7 +191,7 @@ static void disableCoreDump()
     bool ok = false;
     const int disableCoreDump = qEnvironmentVariableIntValue("QTEST_DISABLE_CORE_DUMP", &ok);
     if (ok && disableCoreDump == 1) {
-#if defined(Q_OS_UNIX) && !defined(Q_OS_INTEGRITY)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_INTEGRITY) && !defined(Q_OS_SWITCH)
         struct rlimit limit;
         limit.rlim_cur = 0;
         limit.rlim_max = 0;
@@ -1647,7 +1647,7 @@ public:
         act.sa_handler = FatalSignalHandler::signal;
 
         // Remove the handler after it is invoked.
-#  if !defined(Q_OS_INTEGRITY)
+#  if !defined(Q_OS_INTEGRITY) && !defined(Q_OS_SWITCH)
         act.sa_flags = SA_RESETHAND;
 #  endif
 

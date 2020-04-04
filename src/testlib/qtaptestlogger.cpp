@@ -46,6 +46,7 @@
 #if QT_CONFIG(regularexpression)
 #  include <QtCore/qregularexpression.h>
 #endif
+#include <QString>
 
 QT_BEGIN_NAMESPACE
 
