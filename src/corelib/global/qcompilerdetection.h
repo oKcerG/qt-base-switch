@@ -1067,6 +1067,10 @@
 # endif
 #endif
 
+// #ifdef __DEVKITA64__
+// #  undef Q_COMPILER_THREAD_LOCAL
+// #endif
+
 /*
  * C++11 keywords and expressions
  */
