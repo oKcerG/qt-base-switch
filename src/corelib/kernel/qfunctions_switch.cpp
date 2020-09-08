@@ -77,12 +77,13 @@ long sysconf(int name)
   switch (name)
   {
   case _SC_PAGESIZE:
-    return 8;
+    return 4096;
   case _SC_NPROCESSORS_ONLN:
     return 4;
-  case _SC_SYMLOOP_MAX:
+  //case _SC_SYMLOOP_MAX:
   
   default:
+    printf("sysconf for : %d", name);
     return -1;
   }
 }

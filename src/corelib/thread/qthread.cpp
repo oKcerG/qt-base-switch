@@ -192,6 +192,8 @@ QThreadPrivate::QThreadPrivate(QThreadData *d)
 
     if (!data)
         data = new QThreadData;
+
+    qDebug("QThreadPrivate::QThreadPrivate stack size : %d", stackSize);
 }
 
 QThreadPrivate::~QThreadPrivate()
@@ -492,7 +494,8 @@ bool QThread::isRunning() const
     \sa stackSize()
 */
 void QThread::setStackSize(uint stackSize)
-{
+{    
+    qDebug(" QThread::setStackSize stack size : %d", stackSize);
     Q_D(QThread);
     QMutexLocker locker(&d->mutex);
     Q_ASSERT_X(!d->running, "QThread::setStackSize",

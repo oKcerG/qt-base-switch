@@ -30,6 +30,32 @@ extern "C" {
 //static void* dynarec_cache = NULL;
 //static void* dynarec_cache_mapping = NULL;
 
+static inline void printProt(int prot)
+{
+    if (prot & PROT_READ)
+        printf("PROT_READ, ");
+    if (prot & PROT_WRITE)
+        printf("PROT_WRITE, ");
+    if (prot & PROT_EXEC)
+        printf("PROT_EXEC");
+    if (prot == PROT_NONE)
+        printf("PROT_NONE");
+    printf("\n");
+}
+
+static inline void printFlags(int flags)
+{
+    if (flags & MAP_SHARED)
+        printf("MAP_SHARED, ");
+    if (flags & MAP_PRIVATE)
+        printf("MAP_PRIVATE, ");
+    if (flags & MAP_FIXED)
+        printf("MAP_FIXED, ");
+    if (flags & MAP_ANONYMOUS)
+        printf("MAP_ANONYMOUS");
+    printf("\n");
+} 
+
 static inline void* mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset)
 {
    (void)fd;
@@ -37,11 +63,17 @@ static inline void* mmap(void *addr, size_t len, int prot, int flags, int fd, of
    (void)prot;
    (void)flags;
 
+   
+
+   printf("MMAP addr : %p , len: %ld, prot: %d, flags: %d, fd: %d offset: %ld\n", addr, len, prot, flags, fd, offset);
+   printProt(prot);
+   printFlags(flags);
+
    //void* addr_out;
     Result rc = svcMapPhysicalMemory(addr, len);
     if (R_FAILED(rc))
     {
-        printf("mmap failed\n");
+        printf("MMAP failed :( : %d\n", rc);
         return malloc(len);
     }
 
@@ -85,11 +117,15 @@ static inline int mprotect(void *addr, size_t len, int prot)
    (void)addr;
    (void)len;
    (void)prot;
+   
+   printf("MPROTECT addr : %p , len: %ld, prot: %d", addr, len, prot);
+   printProt(prot);
     return 0;
    //if(true) // __ctr_svchax)
    //{
    //   uint32_t currentHandle;
    //   //svcDuplicateHandle(&currentHandle, 0xFFFF8001);
+   
    //   //svcControlProcessMemory(currentHandle, addr, NULL,
    //   //                        len, MEMOP_PROT, prot);
    //   svcCloseHandle(currentHandle);
@@ -102,6 +138,8 @@ static inline int mprotect(void *addr, size_t len, int prot)
 
 static inline int munmap(void *addr, size_t len)
 {
+    
+   printf("MUNMAP addr : %p , len: %ld", addr, len);
     Result rc = svcUnmapPhysicalMemory(addr, len);
     if (R_FAILED(rc))
     {
